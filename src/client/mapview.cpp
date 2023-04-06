@@ -122,6 +122,7 @@ void MapView::drawMapBackground(const Rect& rect, const TilePtr& crosshairTile) 
     g_drawQueue->setFrameBuffer(rect, m_optimizedSize, srcRect);
 
     if (m_drawLight) {
+        /*
         Light ambientLight;
         if (cameraPosition.z <= Otc::SEA_FLOOR)
             ambientLight = g_map.getLight();
@@ -129,6 +130,32 @@ void MapView::drawMapBackground(const Rect& rect, const TilePtr& crosshairTile) 
             m_lightTexture = TexturePtr(new Texture(m_drawDimension, false, true));
         m_lightView = std::make_unique<LightView>(m_lightTexture, m_drawDimension, rect, srcRect, ambientLight.color,
                                                   std::max<int>(m_minimumAmbientLight * 255, ambientLight.intensity));
+        */
+       Light ambientLight;
+                if(cameraPosition.z <= Otc::SEA_FLOOR) {
+                    ambientLight = g_map.getLight();
+                } else {
+                    int floorCounter = 0;
+                    for (int iz = cameraPosition.z; iz > 0; iz--) {
+                        Position dPos= cameraPosition;
+                        dPos.z = dPos.z - iz;
+                        TilePtr dTile = g_map.getTile(dPos);
+                        if (dTile) {
+                            floorCounter = floorCounter + 1;
+                        }
+                    }
+                    if (floorCounter > 0) {
+                        ambientLight.color = 215;
+                        ambientLight.intensity = 0;
+                    } else {
+                        ambientLight = g_map.getLight();
+                    }
+                }
+                ambientLight.intensity = std::max<int>(m_minimumAmbientLight*255, ambientLight.intensity);
+                
+                if (!m_lightTexture || m_lightTexture->getSize() != m_drawDimension)
+                    m_lightTexture = TexturePtr(new Texture(m_drawDimension, false, true));
+                m_lightView = std::make_unique<LightView>(m_lightTexture, m_drawDimension, rect, srcRect, ambientLight.color, std::max<int>(m_minimumAmbientLight * 255, ambientLight.intensity));
     }
 
     for (int z = m_cachedLastVisibleFloor; z >= m_cachedFirstFadingFloor; --z) {
@@ -567,7 +594,7 @@ int MapView::calcFirstVisibleFloor(bool forFading)
 
                 // limits to underground floors while under sea level
                 if(cameraPosition.z > Otc::SEA_FLOOR)
-                    firstFloor = std::max<int>(cameraPosition.z - Otc::AWARE_UNDEGROUND_FLOOR_RANGE, (int)Otc::UNDERGROUND_FLOOR);
+                    firstFloor = std::max<int>(cameraPosition.z - Otc::AWARE_UNDEGROUND_FLOOR_RANGE, (int)Otc::UNDERGROUND_FLOOR - 1);
 
                 // loop in 3x3 tiles around the camera
                 for(int ix = -1; ix <= 1 && firstFloor < cameraPosition.z && !forFading; ++ix) {

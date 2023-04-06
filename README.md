@@ -1,6 +1,7 @@
 # OtclientV8-plus
-DLC for otcv8. JK, will enable seeing underground while on the surface.
+DLC for otcv8. Just kidding, will enable seeing underground while on the surface.
 I was following Dries390 tutorial, https://otland.net/threads/c-ground-underground-mapping-and-sunshine.269884/
+Release 0.0 also contains a backup for tutorial in .pdf format.
 
 # OTClientV8
 

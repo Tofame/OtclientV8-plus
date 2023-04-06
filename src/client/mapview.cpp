@@ -394,16 +394,6 @@ void MapView::updateVisibleTilesCache()
 
 void MapView::updateGeometry(const Size& visibleDimension, const Size& optimizedSize)
 {
-    float scaleFactor = m_antiAliasingMode == ANTIALIASING_SMOOTH_RETRO ? 2.f : 1.f;
-    m_pool->setScaleFactor(scaleFactor);
-    const uint8_t tileSize = SPRITE_SIZE * m_pool->getScaleFactor();
-    const auto& drawDimension = visibleDimension + 3;
-    const auto& bufferSize = drawDimension * tileSize;
-    if (bufferSize.width() > g_graphics.getMaxTextureSize() || bufferSize.height() > g_graphics.getMaxTextureSize()) {
-        g_logger.traceError("reached max zoom out");
-        return;
-    }
-
     m_multifloor = true;
     m_visibleDimension = visibleDimension;
     m_drawDimension = visibleDimension + Size(3, 3);
@@ -456,18 +446,6 @@ void MapView::setVisibleDimension(const Size& visibleDimension)
 void MapView::optimizeForSize(const Size& visibleSize)
 {
     updateGeometry(m_visibleDimension, visibleSize);
-}
-
-void MapView::setAntiAliasingMode(const AntialiasingMode mode)
-{
-    m_antiAliasingMode = mode;
-
-    g_drawPool.get<DrawPoolFramed>(DrawPoolType::MAP)
-        ->setSmooth(mode != ANTIALIASING_DISABLED);
-
-    if (m_lightView) m_lightView->setSmooth(mode != ANTIALIASING_DISABLED);
-
-    updateGeometry(m_visibleDimension);
 }
 
 void MapView::followCreature(const CreaturePtr& creature)
@@ -643,7 +621,7 @@ int MapView::calcLastVisibleFloor()
         if(cameraPosition.z > Otc::SEA_FLOOR)
             z = cameraPosition.z + Otc::AWARE_UNDEGROUND_FLOOR_RANGE;
         else
-            z = Otc::SEA_FLOOR;
+            z = Otc::SEA_FLOOR+1;
     }
 
     if(m_lockedFirstVisibleFloor != -1)

@@ -835,7 +835,7 @@ int Map::getLastAwareFloor()
     if(m_centralPosition.z > Otc::SEA_FLOOR)
         return std::min<int>(m_centralPosition.z+Otc::AWARE_UNDEGROUND_FLOOR_RANGE, (int)Otc::MAX_Z);
     else
-        return Otc::SEA_FLOOR;
+        return Otc::SEA_FLOOR+1;
 }
 
 std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> Map::findPath(const Position& startPos, const Position& goalPos, int maxComplexity, int flags)

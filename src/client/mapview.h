@@ -34,13 +34,6 @@
 class MapView : public LuaObject
 {
 public:
-    enum AntialiasingMode :uint8_t
-    {
-        ANTIALIASING_DISABLED,
-        ANTIALIASING_ENABLED,
-        ANTIALIASING_SMOOTH_RETRO
-    };
-
     MapView();
     ~MapView();
     void drawMapBackground(const Rect& rect, const TilePtr& crosshairTile = nullptr);
@@ -119,7 +112,6 @@ public:
 
     void setFloorFading(int value) { m_floorFading = value; }
     void setCrosshair(const std::string& file);
-    void setAntiAliasingMode(AntialiasingMode mode);
 
     //void setShader(const PainterShaderProgramPtr& shader, float fadein, float fadeout);
     //PainterShaderProgramPtr getShader() { return m_shader; }
@@ -163,8 +155,6 @@ private:
     stdext::boolean<true> m_drawManaBar;
     bool m_drawPlayerBars = true;
     stdext::boolean<true> m_smooth;
-
-    AntialiasingMode m_antiAliasingMode{ AntialiasingMode::ANTIALIASING_DISABLED };
 
     stdext::timer m_fadingFloorTimers[Otc::MAX_Z + 1];
 

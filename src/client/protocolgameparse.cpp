@@ -3226,7 +3226,7 @@ void ProtocolGame::setMapDescription(const InputMessagePtr& msg, int x, int y, i
         endz = std::min<int>(z + Otc::AWARE_UNDEGROUND_FLOOR_RANGE, (int)Otc::MAX_Z);
         zstep = 1;
     } else {
-        startz = Otc::SEA_FLOOR;
+        startz = Otc::SEA_FLOOR+1;
         endz = 0;
         zstep = -1;
     }

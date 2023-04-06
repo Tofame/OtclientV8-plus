@@ -89,8 +89,6 @@ public:
     int getZoom() { return m_zoom; }
     float getMinimumAmbientLight() { return m_mapView->getMinimumAmbientLight(); }
 
-    void setAntiAliasingMode(const MapView::AntialiasingMode mode) { m_mapView->setAntiAliasingMode(mode); }
-
     void setShader(const std::string& shader)
     {
         m_shader = shader;

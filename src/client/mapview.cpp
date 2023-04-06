@@ -140,7 +140,7 @@ void MapView::drawMapBackground(const Rect& rect, const TilePtr& crosshairTile) 
                         Position dPos= cameraPosition;
                         dPos.z = dPos.z - iz;
                         TilePtr dTile = g_map.getTile(dPos);
-                        if (dTile) {
+                        if (dTile && dTile->isFullGround()) {
                             floorCounter = floorCounter + 1;
                         }
                     }

@@ -39,7 +39,7 @@ StaticText::StaticText()
 void StaticText::drawText(const Point& dest, const Rect& parentRect)
 {
     Size textSize = m_cachedText.getTextSize();
-    Rect rect = Rect(dest - Point(textSize.width() / 2, textSize.height()) + Point(20, 5), textSize);
+    Rect rect = Rect(dest - Point(textSize.width() / 2, textSize.height()) + Point(15, -5), textSize); // Tofame where text is written default: 20, 5
     Rect boundRect = rect;
     boundRect.bind(parentRect);
 
